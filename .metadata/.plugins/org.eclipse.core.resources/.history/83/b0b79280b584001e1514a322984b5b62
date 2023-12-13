@@ -1,0 +1,92 @@
+import 
+
+public class Lab3_2 {
+
+    static int PostfixBodoh(String exp) {
+        MyStack ms = new MyStack();
+
+        for (int i = 0; i < exp.length(); i++) {
+            char c = exp.charAt(i);
+
+            if (Character.isDigit(c)) {
+                StringBuilder operand = new StringBuilder();
+                
+                while (i < exp.length() && Character.isDigit(exp.charAt(i))) {
+                    operand.append(exp.charAt(i));
+                    i++;
+                }
+                ms.push(Integer.parseInt(operand.toString()));
+                i--;
+            } else {
+                int val1 = (int) ms.pop();
+                int val2 = (int) ms.pop();
+
+                switch (c) {
+                    case '+':
+                        ms.push(val2 + val1);
+                        break;
+                    case '-':
+                        ms.push(val2 - val1);
+                        break;
+                    case '/':
+                        ms.push(val2 / val1);
+                        break;
+                    case '*':
+                        ms.push(val2 * val1);
+                        break;
+                }
+            }
+        }
+        return (int) ms.pop();
+    }
+
+    static String infixToPostfix(String exp) {
+        StringBuilder result = new StringBuilder();
+        MyStack operatorStack = new MyStack();
+
+        for (int i = 0; i < exp.length(); i++) {
+            char c = exp.charAt(i);
+
+            if (Character.isDigit(c)) {
+                result.append(c);
+            } else if (c == '(') {
+                operatorStack.push(c);
+            } else if (c == ')') {
+                while (!operatorStack.empty() && (char) operatorStack.peek() != '(') {
+                    result.append(operatorStack.pop());
+                }
+                operatorStack.pop(); // Pop '('
+            } else {
+                while (!operatorStack.empty() && precedence(c) <= precedence((char) operatorStack.peek())) {
+                    result.append(operatorStack.pop());
+                }
+                operatorStack.push(c);
+            }
+        }
+
+        while (!operatorStack.empty()) {
+            result.append(operatorStack.pop());
+        }
+
+        return result.toString();
+    }
+
+    static int precedence(char operator) {
+        switch (operator) {
+            case '+':
+            case '-':
+                return 1;
+            case '*':
+            case '/':
+                return 2;
+        }
+        return -1; // For '('
+    }
+
+    public static void main(String[] args) {
+        String exp = "2+3*4-6/3*5+9";
+        String pfexp = infixToPostfix(exp);
+        System.out.println("Postfix Expression: " + pfexp);
+        System.out.println("Result: " + PostfixBodoh(pfexp));
+    }
+}

@@ -1,0 +1,62 @@
+import dataStructures.Chain;
+import java.util.Arrays;
+
+public class MyChain extends Chain {
+	
+	
+    public Object[] toArray() {
+        Object arr[] = new Object[size()];
+
+        for (int i = 0; i < size(); i++) {
+            arr[i] = get(i);
+        }
+
+        return arr;
+    }
+
+    
+    public void addRange(Object[] elements) {
+        for (int i = 0; i < elements.length; i++) {
+            add(size(), elements[i]);
+        }
+    }
+    
+
+    public MyChain intersect(MyChain mlist) {
+        MyChain intersectCh = new MyChain();
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < mlist.size(); j++) {
+                if (get(i).equals(mlist.get(j))) {
+                    intersectCh.add(intersectCh.size(), get(i));
+                    break;
+                }
+            }
+        }
+        return intersectCh;
+    }
+
+
+    public MyChain union(MyChain chain) {
+        MyChain unionCh = new MyChain();
+        unionCh.addRange(toArray());
+        for (int i = 0; i < chain.size(); i++) {
+            if (!unionCh.contains(chain.get(i))) {
+                unionCh.add(unionCh.size(), chain.get(i));
+            }
+        }
+
+        return unionCh;
+    }
+    
+
+    public boolean contains(Object element) {
+        for (int i = 0; i < size(); i++) {
+            if (get(i).equals(element)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+   
+}

@@ -1,0 +1,41 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        MyChain chain1 = new MyChain();
+        MyChain chain2 = new MyChain();
+
+
+        String filePath = "C:\\Users\\\\svhba\\Desktop\\bojo\\500k_data.txt";
+
+
+        try {
+            readDataFromFile(filePath, chain1);
+            readDataFromFile(filePath, chain2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        MyChain result1 = chain1.intersectMethod1(chain2);
+        System.out.println("Intersect Method 1 Result: " + Arrays.toString(result1.toArray()));
+
+
+        MyChain result2 = chain1.intersectMethod2(chain2);
+        System.out.println("Intersect Method 2 Result: " + Arrays.toString(result2.toArray()));
+    }
+
+    private static void readDataFromFile(String filePath, MyChain chain) throws IOException {
+        Path path = Paths.get(filePath);
+
+
+        Files.lines(path).forEach(line -> {
+
+            int value = Integer.parseInt(line.trim());
+            chain.add(chain.size(), value);
+        });
+    }
+}

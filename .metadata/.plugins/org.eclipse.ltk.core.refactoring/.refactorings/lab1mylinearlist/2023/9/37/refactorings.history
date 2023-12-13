@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;MyarrayLinearList&apos; to &apos;MyArrayLinearList&apos;&#x0D;&#x0A;- Original project: &apos;lab1mylinearlist&apos;&#x0D;&#x0A;- Original element: &apos;MyarrayLinearList&apos;&#x0D;&#x0A;- Renamed element: &apos;MyArrayLinearList&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;MyarrayLinearList&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;{MyarrayLinearList.java[MyarrayLinearList" matchStrategy="1" name="MyArrayLinearList" qualified="false" references="true" similarDeclarations="false" stamp="1694707389332" textual="false" version="1.0"/>
+</session>

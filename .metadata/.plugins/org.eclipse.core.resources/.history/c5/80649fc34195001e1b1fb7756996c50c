@@ -1,0 +1,70 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+
+class Edge {
+    int destination;
+    int weight;
+
+    public Edge(int destination, int weight) {
+        this.destination = destination;
+        this.weight = weight;
+    }
+}
+
+public class PrimAlgorithm {
+
+    public static List<List<Edge>> primMST(List<List<Edge>> graph) {
+        int vertices = graph.size();
+        List<List<Edge>> mst = new ArrayList<>();
+        for (int i = 0; i < vertices; i++) {
+            mst.add(new ArrayList<>());
+        }
+
+        boolean[] inMST = new boolean[vertices];
+        PriorityQueue<Edge> minHeap = new PriorityQueue<>((e1, e2) -> Integer.compare(e1.weight, e2.weight));
+
+        // Start from vertex 0
+        minHeap.add(new Edge(0, 0));
+
+        while (!minHeap.isEmpty()) {
+            Edge currentEdge = minHeap.poll();
+            int currentVertex = currentEdge.destination;
+
+            if (inMST[currentVertex]) {
+                continue;
+            }
+
+            inMST[currentVertex] = true;
+
+            for (Edge neighbor : graph.get(currentVertex)) {
+                if (!inMST[neighbor.destination]) {
+                    minHeap.add(neighbor);
+                }
+            }
+
+            // Add the current edge to the minimum spanning tree
+            mst.get(currentVertex).add(new Edge(currentEdge.destination, currentEdge.weight));
+        }
+
+        return mst;
+    }
+
+    public static void main(String[] args) {
+        // Example graph represented as an adjacency list
+        List<List<Edge>> graph = new ArrayList<>();
+
+        // Add edges with weights
+        graph.add(List.of(new Edge(1, 2), new Edge(3, 6)));
+        graph.add(List.of(new Edge(0, 2), new Edge(2, 3), new Edge(3, 8)));
+        graph.add(List.of(new Edge(1, 3), new Edge(3, 5)));
+        graph.add(List.of(new Edge(0, 6), new Edge(1, 8), new Edge(2, 5)));
+
+        List<List<Edge>> minimumSpanningTree = primMST(graph);
+
+        // Print the minimum spanning tree
+        for (int i = 0; i < minimumSpanningTree.size(); i++) {
+            System.out.println("Edges from vertex " + i + ": " + minimumSpanningTree.get(i));
+        }
+    }
+}

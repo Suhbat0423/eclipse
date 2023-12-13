@@ -1,0 +1,87 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PriorityQueue;
+
+class Edge implements Comparable<Edge> {
+    int destination;
+    int weight;
+
+    public Edge(int destination, int weight) {
+        this.destination = destination;
+        this.weight = weight;
+    }
+
+    @Override
+    public int compareTo(Edge other) {
+        return Integer.compare(this.weight, other.weight);
+    }
+}
+
+public class PrimAlgorithm {
+
+    public static List<Edge>[] primMST(List<Edge>[] graph) {
+        int vertices = graph.length;
+        List<Edge>[] mst = new ArrayList[vertices];
+        for (int i = 0; i < vertices; i++) {
+            mst[i] = new ArrayList<>();
+        }
+
+        boolean[] inMST = new boolean[vertices];
+        PriorityQueue<Edge> minHeap = new PriorityQueue<>();
+
+        // Start from vertex 0
+        minHeap.add(new Edge(0, 0));
+
+        while (!minHeap.isEmpty()) {
+            Edge currentEdge = minHeap.poll();
+            int currentVertex = currentEdge.destination;
+
+            if (inMST[currentVertex]) {
+                continue;
+            }
+
+            inMST[currentVertex] = true;
+
+            for (Edge neighbor : graph[currentVertex]) {
+                if (!inMST[neighbor.destination]) {
+                    minHeap.add(neighbor);
+                }
+            }
+
+            // Add the current edge to the minimum spanning tree
+            mst[currentVertex].add(new Edge(currentEdge.destination, currentEdge.weight));
+        }
+
+        return mst;
+    }
+
+    public static void main(String[] args) {
+        int vertices = 5;
+
+        // Example graph represented as an adjacency list
+        List<Edge>[] graph = new ArrayList[vertices];
+        for (int i = 0; i < vertices; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        // Add edges with weights
+        graph[0].add(new Edge(1, 2));
+        graph[0].add(new Edge(3, 6));
+        graph[1].add(new Edge(0, 2));
+        graph[1].add(new Edge(2, 3));
+        graph[1].add(new Edge(3, 8));
+        graph[2].add(new Edge(1, 3));
+        graph[2].add(new Edge(3, 5));
+        graph[3].add(new Edge(0, 6));
+        graph[3].add(new Edge(1, 8));
+        graph[3].add(new Edge(2, 5));
+
+        List<Edge>[] minimumSpanningTree = primMST(graph);
+
+        // Print the minimum spanning tree
+        for (int i = 0; i < minimumSpanningTree.length; i++) {
+            System.out.println("Edges from vertex " + i + ": " + Arrays.toString(minimumSpanningTree[i].toArray()));
+        }
+    }
+}
